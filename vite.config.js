@@ -1,8 +1,10 @@
+// Import the crypto polyfill first to ensure it's available
+import './crypto-polyfill.js';
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
-import crypto from 'crypto';
 
 // Get canister IDs from dfx.json
 const getDfxCanisterIds = () => {
@@ -49,14 +51,7 @@ export default defineConfig({
     'process.env.INTERNET_IDENTITY_CANISTER_ID': JSON.stringify(
       process.env.INTERNET_IDENTITY_CANISTER_ID || 'asrmz-lmaaa-aaaaa-qaaeq-cai'
     ),
-    // Properly polyfill crypto for Node.js environment
-    ...(typeof process !== 'undefined' && {
-      'global.crypto': JSON.stringify({
-        getRandomValues: function(buffer) {
-          return crypto.randomFillSync(buffer);
-        }
-      })
-    }),
+    // WebCrypto API is polyfilled via crypto-polyfill.js
   },
   server: {
     proxy: {
