@@ -134,5 +134,6 @@ jobs:
     
     - name: Build
       run: |
-        export NODE_OPTIONS="--no-experimental-fetch --experimental-global-webcrypto"
-        npm run build
+        # Use a different approach to enable WebCrypto API
+        export NODE_OPTIONS="--no-experimental-fetch"
+        node --experimental-global-webcrypto ./node_modules/.bin/vite build
