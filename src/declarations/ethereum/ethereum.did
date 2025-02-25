@@ -1,0 +1,71 @@
+// Ethereum Chain Key API
+type EthereumNetwork = variant {
+  mainnet;
+  sepolia;
+};
+type EthereumAddress = text;
+type Wei = nat;
+type EthereumTransaction = record {
+  hash: text;
+  from: EthereumAddress;
+  to: EthereumAddress;
+  value: Wei;
+  gas_used: nat;
+  gas_price: Wei;
+  block_number: nat;
+  block_hash: text;
+  confirmations: nat32;
+  status: bool;
+};
+type ERC20Token = record {
+  address: EthereumAddress;
+  name: text;
+  symbol: text;
+  decimals: nat8;
+};
+type ERC20Balance = record {
+  token: ERC20Token;
+  balance: Wei;
+};
+type SendTransactionRequest = record {
+  to: EthereumAddress;
+  value: Wei;
+  data: opt vec nat8;
+  gas_limit: nat;
+};
+type CallRequest = record {
+  to: EthereumAddress;
+  data: vec nat8;
+};
+
+service : {
+  // Get an Ethereum address for the canister
+  get_address: () -> (EthereumAddress);
+  
+  // Get an Ethereum address for a user
+  get_user_address: (principal) -> (EthereumAddress);
+  
+  // Get the ETH balance of an address
+  get_balance: (EthereumAddress) -> (Wei) query;
+  
+  // Get an ERC20 token balance
+  get_erc20_balance: (EthereumAddress, EthereumAddress) -> (Wei) query;
+  
+  // Get a transaction by hash
+  get_transaction: (text) -> (EthereumTransaction) query;
+  
+  // Send an Ethereum transaction
+  send_transaction: (SendTransactionRequest) -> (text);
+  
+  // Call a contract (no state change)
+  call: (CallRequest) -> (vec nat8) query;
+  
+  // Get the current gas price
+  get_gas_price: () -> (Wei) query;
+  
+  // Get the current Ethereum network
+  get_network: () -> (EthereumNetwork) query;
+  
+  // Get the current block number
+  get_block_number: () -> (nat) query;
+}

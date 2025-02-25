@@ -1,0 +1,63 @@
+{
+  "canisters": {
+    "dex": {
+      "main": "src/canisters/dex/main.mo",
+      "type": "motoko"
+    },
+    "ckBTC": {
+      "main": "src/canisters/tokens/ckBTC.mo",
+      "type": "motoko"
+    },
+    "ckETH": {
+      "main": "src/canisters/tokens/ckETH.mo",
+      "type": "motoko"
+    },
+    "ckUSDC": {
+      "main": "src/canisters/tokens/ckUSDC.mo",
+      "type": "motoko"
+    },
+    "iso_dapp": {
+      "main": "src/canisters/iso_dapp/main.mo",
+      "type": "motoko",
+      "dependencies": ["ckBTC", "ckETH", "ckUSDC"]
+    },
+    "frontend": {
+      "dependencies": ["dex", "ckBTC", "ckETH", "ckUSDC", "iso_dapp"],
+      "type": "assets",
+      "source": ["dist"],
+      "build": ["npm run build"]
+    },
+    "internet_identity": {
+      "type": "custom",
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
+      "shrink": false,
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "testnet": {
+      "providers": ["https://ic0.app"],
+      "type": "persistent"
+    },
+    "mainnet": {
+      "providers": ["https://ic0.app"],
+      "type": "persistent"
+    }
+  },
+  "version": 1
+}

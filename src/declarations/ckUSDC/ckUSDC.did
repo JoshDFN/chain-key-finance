@@ -1,0 +1,25 @@
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type CkUSDC = 
+ service {
+   allowance: (principal, principal) -> (nat) query;
+   approve: (principal, nat) -> (Result);
+   balanceOf: (principal) -> (nat) query;
+   blacklist: (principal) -> (Result);
+   burn: (principal, nat) -> (Result);
+   decimals: () -> (nat8) query;
+   mint: (principal, nat) -> (Result);
+   name: () -> (text) query;
+   owner: () -> (principal) query;
+   pause: () -> (Result);
+   symbol: () -> (text) query;
+   totalSupply: () -> (nat) query;
+   transfer: (principal, nat) -> (Result);
+   transferFrom: (principal, principal, nat) -> (Result);
+   unblacklist: (principal) -> (Result);
+   unpause: () -> (Result);
+ };
+service : () -> CkUSDC

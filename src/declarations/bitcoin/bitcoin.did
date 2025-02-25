@@ -1,0 +1,66 @@
+// Bitcoin Chain Key API
+type BitcoinAddress = text;
+type BitcoinNetwork = variant {
+  mainnet;
+  testnet;
+};
+type Satoshi = nat64;
+type MillisatoshiPerByte = nat64;
+type BitcoinTransaction = record {
+  hash: text;
+  inputs: vec BitcoinTransactionInput;
+  outputs: vec BitcoinTransactionOutput;
+  confirmations: nat32;
+  block_height: opt nat32;
+};
+type BitcoinTransactionInput = record {
+  address: opt BitcoinAddress;
+  value: Satoshi;
+};
+type BitcoinTransactionOutput = record {
+  address: BitcoinAddress;
+  value: Satoshi;
+};
+type GetUtxosResponse = record {
+  utxos: vec Utxo;
+  total_count: nat64;
+};
+type Utxo = record {
+  outpoint: OutPoint;
+  value: Satoshi;
+  height: nat32;
+};
+type OutPoint = record {
+  txid: vec nat8;
+  vout: nat32;
+};
+type SendTransactionRequest = record {
+  transaction: vec nat8;
+  network: BitcoinNetwork;
+};
+
+service : {
+  // Get a P2PKH Bitcoin address for the canister
+  get_p2pkh_address: () -> (BitcoinAddress);
+  
+  // Get a Bitcoin address for the user
+  get_user_address: (principal) -> (BitcoinAddress);
+  
+  // Get the balance of a Bitcoin address
+  get_balance: (BitcoinAddress) -> (Satoshi) query;
+  
+  // Get UTXOs for a Bitcoin address
+  get_utxos: (BitcoinAddress) -> (GetUtxosResponse) query;
+  
+  // Get a Bitcoin transaction by hash
+  get_transaction: (text) -> (BitcoinTransaction) query;
+  
+  // Send a Bitcoin transaction
+  send_transaction: (SendTransactionRequest) -> (text);
+  
+  // Get the current fee estimate
+  get_fee_percentiles: () -> (vec MillisatoshiPerByte) query;
+  
+  // Get the current Bitcoin network
+  get_network: () -> (BitcoinNetwork) query;
+}

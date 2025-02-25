@@ -1,0 +1,40 @@
+type TokenPair = 
+ record {
+   base: text;
+   quote: text;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: OrderId;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type OrderId = nat;
+type Order = 
+ record {
+   amount: nat;
+   id: OrderId;
+   isBuy: bool;
+   owner: principal;
+   pair: TokenPair;
+   price: nat;
+   spread: nat;
+   timestamp: int;
+ };
+type Dex = 
+ service {
+   cancelOrder: (OrderId) -> (Result);
+   fillOrder: (OrderId) -> (Result);
+   getAllOrders: () -> (vec Order) query;
+   getMinimumSpread: () -> (nat) query;
+   getOrder: (OrderId) -> (opt Order) query;
+   getUserOrders: (principal) -> (vec Order) query;
+   getVolatility: () -> (nat) query;
+   placeOrder: (TokenPair, bool, nat, nat, nat) -> (Result_1);
+   updateVolatility: (nat) -> (Result);
+ };
+service : () -> Dex

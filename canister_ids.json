@@ -1,0 +1,23 @@
+{
+  "ckBTC": {
+    "ic": "ktciv-wqaaa-aaaad-aakhq-cai"
+  },
+  "ckETH": {
+    "ic": "io7g5-fyaaa-aaaad-aakia-cai"
+  },
+  "ckSOL": {
+    "ic": "ij6aj-iaaaa-aaaad-aakiq-cai"
+  },
+  "ckUSDC": {
+    "ic": "4oswu-zaaaa-aaaai-q3una-cai"
+  },
+  "dex": {
+    "ic": "44ubn-vqaaa-aaaai-q3uoa-cai"
+  },
+  "frontend": {
+    "ic": "zonwa-fiaaa-aaaai-q3uqq-cai"
+  },
+  "iso_dapp": {
+    "ic": "43vhz-yiaaa-aaaai-q3uoq-cai"
+  }
+}
