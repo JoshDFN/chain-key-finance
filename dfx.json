@@ -24,8 +24,7 @@
     "frontend": {
       "dependencies": ["dex", "ckBTC", "ckETH", "ckUSDC", "iso_dapp"],
       "type": "assets",
-      "source": ["dist"],
-      "build": ["npm run build"]
+      "source": ["dist"]
     },
     "internet_identity": {
       "type": "custom",
