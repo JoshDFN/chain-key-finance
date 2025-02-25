@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
+import crypto from 'crypto';
 
 // Get canister IDs from dfx.json
 const getDfxCanisterIds = () => {
@@ -48,7 +49,14 @@ export default defineConfig({
     'process.env.INTERNET_IDENTITY_CANISTER_ID': JSON.stringify(
       process.env.INTERNET_IDENTITY_CANISTER_ID || 'asrmz-lmaaa-aaaaa-qaaeq-cai'
     ),
-    // Node.js polyfills - we don't need to manually set global.crypto as it's handled by --experimental-global-webcrypto
+    // Properly polyfill crypto for Node.js environment
+    ...(typeof process !== 'undefined' && {
+      'global.crypto': JSON.stringify({
+        getRandomValues: function(buffer) {
+          return crypto.randomFillSync(buffer);
+        }
+      })
+    }),
   },
   server: {
     proxy: {
