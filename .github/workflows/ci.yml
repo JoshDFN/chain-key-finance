@@ -140,9 +140,8 @@ jobs:
     #     export NODE_OPTIONS="--no-experimental-fetch"
     #     npm run build
     
-    # Create dist directory and copy pre-built files from the repository
-    - name: Prepare dist directory
+    # Verify that the dist directory exists
+    - name: Verify dist directory
       run: |
         echo "Using pre-built files from the repository"
-        mkdir -p dist
-        cp -r dist/* dist/
+        ls -la dist
