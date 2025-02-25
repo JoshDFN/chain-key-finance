@@ -1,14 +1,25 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { resolve, dirname } from 'path';
 
 // Get canister IDs from dfx.json
 const getDfxCanisterIds = () => {
   try {
     const dfxJson = JSON.parse(readFileSync(resolve('.', 'dfx.json'), 'utf8'));
     const network = process.env.DFX_NETWORK || 'local';
-    const canisterIds = JSON.parse(readFileSync(resolve('.', '.dfx', network, 'canister_ids.json'), 'utf8'));
+    
+    // Create the directory and empty canister_ids.json file if it doesn't exist
+    const canisterIdsPath = resolve('.', '.dfx', network, 'canister_ids.json');
+    if (!existsSync(canisterIdsPath)) {
+      const dir = dirname(canisterIdsPath);
+      if (!existsSync(dir)) {
+        mkdirSync(dir, { recursive: true });
+      }
+      writeFileSync(canisterIdsPath, '{}', 'utf8');
+    }
+    
+    const canisterIds = JSON.parse(readFileSync(canisterIdsPath, 'utf8'));
 
     return Object.entries(dfxJson.canisters).reduce((acc, [name, _value]) => {
       const canisterId = canisterIds[name]?.[network];
@@ -37,6 +48,7 @@ export default defineConfig({
     'process.env.INTERNET_IDENTITY_CANISTER_ID': JSON.stringify(
       process.env.INTERNET_IDENTITY_CANISTER_ID || 'asrmz-lmaaa-aaaaa-qaaeq-cai'
     ),
+    // Node.js polyfills - we don't need to manually set global.crypto as it's handled by --experimental-global-webcrypto
   },
   server: {
     proxy: {
