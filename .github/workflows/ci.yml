@@ -21,7 +21,9 @@ jobs:
       run: npm ci
     
     - name: Install dfx
-      uses: dfinity/setup-dfx@main
+      run: |
+        sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+        dfx --version
     
     - name: Start local replica
       run: |

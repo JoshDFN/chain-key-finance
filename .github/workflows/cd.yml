@@ -32,7 +32,9 @@ jobs:
         run: npm ci
       
       - name: Install dfx
-        uses: dfinity/setup-dfx@main
+        run: |
+          sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+          dfx --version
       
       - name: Start local replica for build
         run: |
@@ -172,7 +174,7 @@ jobs:
           export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
           # Suppress warning about plaintext identity
           export DFX_WARNING=-mainnet_plaintext_identity
-          dfx deploy --network=testnet --no-wallet
+          dfx deploy --network=testnet --no-wallet --skip-frontend-build
       
       - name: Deploy to mainnet
         if: ${{ github.event.inputs.environment == 'mainnet' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
@@ -184,8 +186,8 @@ jobs:
           # Create production canister IDs if they don't exist
           dfx canister --network ic create --all
           
-          # Build the canisters
-          dfx build --network ic
+          # Build the canisters (skip frontend build since we're using pre-built files)
+          dfx build --network ic --skip-frontend-build
           
           # Deploy the canisters
           dfx canister --network ic install --all --mode upgrade
