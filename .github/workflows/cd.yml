@@ -170,6 +170,8 @@ jobs:
         run: |
           export NODE_OPTIONS="--no-experimental-fetch"
           export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
+          # Suppress warning about plaintext identity
+          export DFX_WARNING=-mainnet_plaintext_identity
           dfx deploy --network=testnet --no-wallet
       
       - name: Deploy to mainnet
@@ -177,6 +179,8 @@ jobs:
         run: |
           export NODE_OPTIONS="--no-experimental-fetch"
           export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
+          # Suppress warning about plaintext identity
+          export DFX_WARNING=-mainnet_plaintext_identity
           # Create production canister IDs if they don't exist
           dfx canister --network ic create --all
           
