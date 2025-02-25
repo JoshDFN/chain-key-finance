@@ -20,5 +20,18 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
+    - name: Install dfx
+      uses: dfinity/setup-dfx@main
+    
+    - name: Start local replica
+      run: |
+        dfx start --background
+        mkdir -p .dfx/local
+        echo '{}' > .dfx/local/canister_ids.json
+        dfx canister create --all
+        dfx generate
+    
     - name: Build
-      run: npm run build
+      run: |
+        export NODE_OPTIONS="--no-experimental-fetch --experimental-global-webcrypto"
+        npm run build
