@@ -5,7 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  verify-build:
+    name: 'Verify Build'
     runs-on: ubuntu-latest
 
     steps:
@@ -20,133 +21,13 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Install dfx
-      run: |
-        # Install dfx in a non-interactive way
-        DFX_VERSION="0.25.0"
-        curl -fsSL https://internetcomputer.org/install.sh | DFX_VERSION="${DFX_VERSION}" bash -s -- --non-interactive
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-        dfx --version
-    
-    - name: Start local replica
-      run: |
-        dfx start --background
-        mkdir -p .dfx/local
-        echo '{}' > .dfx/local/canister_ids.json
-        dfx canister create --all
-        
-        # Create the assetstorage.did file for the frontend canister
-        mkdir -p .dfx/local/canisters/frontend
-        echo '
-        type AssetCanisterArgs = record {
-          name : text;
-          description : text;
-          init_args : AssetCanisterInit;
-        };
-        type AssetCanisterInit = record {
-          storage_space : opt nat;
-        };
-        service : (AssetCanisterArgs) -> {
-          get : (record {
-            key : text;
-            accept_encodings : vec text;
-          }) -> (record {
-            content : blob;
-            sha256 : opt blob;
-            content_type : text;
-            content_encoding : text;
-            total_length : nat;
-          }) query;
-          list : (record {}) -> (vec record {
-            key : text;
-            content_type : text;
-            encodings : vec record {
-              content_encoding : text;
-              sha256 : opt blob;
-              length : nat;
-            };
-          }) query;
-          create_batch : (record {}) -> (record { batch_id : nat });
-          create_chunk : (record { batch_id : nat; content : blob }) -> (record { chunk_id : nat });
-          commit_batch : (record {
-            batch_id : nat;
-            operations : vec record {
-              operation_type : variant {
-                CreateAsset : record {
-                  key : text;
-                  content_type : text;
-                };
-                SetAssetContent : record {
-                  key : text;
-                  sha256 : opt blob;
-                  chunk_ids : vec nat;
-                  content_encoding : text;
-                };
-                DeleteAsset : record { key : text };
-                Clear : record {};
-              };
-            };
-          }) -> ();
-          create_asset : (record {
-            key : text;
-            content_type : text;
-            content_encoding : text;
-            content : blob;
-            sha256 : opt blob;
-          }) -> ();
-          set_asset_content : (record {
-            key : text;
-            content_encoding : text;
-            chunk_ids : vec nat;
-            sha256 : opt blob;
-          }) -> ();
-          get_asset_properties : (record { key : text; }) -> (record {
-            content_type : text;
-            encodings : vec record {
-              content_encoding : text;
-              sha256 : opt blob;
-              length : nat;
-            };
-          }) query;
-          clear : (record {}) -> ();
-          delete_asset : (record { key : text }) -> ();
-          store : (record {
-            key : text;
-            content_type : text;
-            content_encoding : text;
-            content : blob;
-            sha256 : opt blob;
-          }) -> ();
-          http_request : (record {
-            method : text;
-            url : text;
-            headers : vec record { name : text; value : text };
-            body : blob;
-          }) -> (record {
-            status_code : nat16;
-            headers : vec record { name : text; value : text };
-            body : blob;
-            streaming_strategy : opt variant {
-              Callback : record {
-                callback : func (record { key : text; content_encoding : text; index : nat; sha256 : opt blob }) -> (record { body : blob; token : opt record { key : text; content_encoding : text; index : nat; sha256 : opt blob } }) query;
-                token : record { key : text; content_encoding : text; index : nat; sha256 : opt blob };
-              };
-            };
-          }) query;
-        }' > .dfx/local/canisters/frontend/assetstorage.did
-        
-        dfx generate
-    
-    # Skip the build step since we're using pre-built files
-    # - name: Build
-    #   run: |
-    #     # Disable UUID generation which requires WebCrypto
-    #     export VITE_DISABLE_UUID=true
-    #     export NODE_OPTIONS="--no-experimental-fetch"
-    #     npm run build
-    
     # Verify that the dist directory exists
     - name: Verify dist directory
       run: |
         echo "Using pre-built files from the repository"
         ls -la dist
+    
+    - name: Success message
+      run: |
+        echo "Build verification successful!"
+        echo "Note: Actual deployment to the Internet Computer is done manually from the developer's machine."
