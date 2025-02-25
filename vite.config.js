@@ -2,33 +2,16 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
+import * as crypto from 'crypto';
 
-// Ensure crypto is available in Node.js environment
-// This is a more robust approach that should work in both local and GitHub Actions environments
-const ensureGlobalCrypto = () => {
-  if (typeof process !== 'undefined') {
-    try {
-      const crypto = require('crypto');
-      
-      // Only set global.crypto if it doesn't exist or doesn't have getRandomValues
-      if (!global.crypto || !global.crypto.getRandomValues) {
-        global.crypto = {
-          ...global.crypto,
-          getRandomValues: function(buffer) {
-            return crypto.randomFillSync(buffer);
-          }
-        };
-      }
-      
-      console.log('WebCrypto polyfill applied successfully');
-    } catch (error) {
-      console.warn('Failed to polyfill WebCrypto API:', error);
-    }
-  }
-};
-
-// Apply the polyfill
-ensureGlobalCrypto();
+// Directly polyfill global.crypto.getRandomValues
+if (typeof global !== 'undefined' && (!global.crypto || !global.crypto.getRandomValues)) {
+  console.log('Applying WebCrypto polyfill');
+  global.crypto = global.crypto || {};
+  global.crypto.getRandomValues = function(buffer) {
+    return crypto.randomFillSync(buffer);
+  };
+}
 
 // Get canister IDs from dfx.json
 const getDfxCanisterIds = () => {
