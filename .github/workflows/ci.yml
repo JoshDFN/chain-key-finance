@@ -134,6 +134,7 @@ jobs:
     
     - name: Build
       run: |
-        # Use a different approach to enable WebCrypto API
+        # Disable UUID generation which requires WebCrypto
+        export VITE_DISABLE_UUID=true
         export NODE_OPTIONS="--no-experimental-fetch"
-        node --experimental-global-webcrypto ./node_modules/.bin/vite build
+        npm run build

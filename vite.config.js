@@ -2,16 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
-import * as crypto from 'crypto';
 
-// Directly polyfill global.crypto.getRandomValues
-if (typeof global !== 'undefined' && (!global.crypto || !global.crypto.getRandomValues)) {
-  console.log('Applying WebCrypto polyfill');
-  global.crypto = global.crypto || {};
-  global.crypto.getRandomValues = function(buffer) {
-    return crypto.randomFillSync(buffer);
-  };
-}
+// Disable randomUUID usage in Vite which requires WebCrypto
+process.env.VITE_DISABLE_UUID = 'true';
 
 // Get canister IDs from dfx.json
 const getDfxCanisterIds = () => {
@@ -58,7 +51,6 @@ export default defineConfig({
     'process.env.INTERNET_IDENTITY_CANISTER_ID': JSON.stringify(
       process.env.INTERNET_IDENTITY_CANISTER_ID || 'asrmz-lmaaa-aaaaa-qaaeq-cai'
     ),
-    // WebCrypto API is polyfilled directly in this file
   },
   server: {
     proxy: {
