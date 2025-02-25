@@ -161,9 +161,13 @@ jobs:
       # `dfx identity export github-actions | base64`
       - name: Setup DFX identity
         run: |
-          mkdir -p ~/.config/dfx/identity/default
-          echo $DFX_IDENTITY | base64 -d > ~/.config/dfx/identity/default/identity.pem
-          chmod 600 ~/.config/dfx/identity/default/identity.pem
+          # Create identity directory in the workspace
+          mkdir -p $GITHUB_WORKSPACE/.dfx/identity/default
+          echo $DFX_IDENTITY | base64 -d > $GITHUB_WORKSPACE/.dfx/identity/default/identity.pem
+          chmod 600 $GITHUB_WORKSPACE/.dfx/identity/default/identity.pem
+          
+          # Set DFX_CONFIG_ROOT to use the workspace directory
+          export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
           dfx identity use default
           dfx identity get-principal
         env:
@@ -173,12 +177,14 @@ jobs:
         if: ${{ github.event.inputs.environment == 'testnet' || (github.event_name == 'push' && github.ref != 'refs/heads/main') }}
         run: |
           export NODE_OPTIONS="--no-experimental-fetch"
+          export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
           dfx deploy --network=testnet --no-wallet
       
       - name: Deploy to mainnet
         if: ${{ github.event.inputs.environment == 'mainnet' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
         run: |
           export NODE_OPTIONS="--no-experimental-fetch"
+          export DFX_CONFIG_ROOT=$GITHUB_WORKSPACE
           # Create production canister IDs if they don't exist
           dfx canister --network ic create --all
           
