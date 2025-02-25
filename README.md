@@ -1,4 +1,4 @@
-# Teleport
+# Teleport - Cross-Chain Asset Management
 
 Teleport is a cross-chain asset management and trading platform built on the Internet Computer. It enables users to deposit Bitcoin, Ethereum, and USDC, and receive chain-key tokens (ckBTC, ckETH, ckUSDC) that can be traded on the integrated DEX.
 
