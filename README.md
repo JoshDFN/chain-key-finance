@@ -91,21 +91,18 @@ For a detailed overview of the current status and what needs to be done, see the
 
 ## Deployment
 
-This project uses GitHub Actions for CI/CD:
+This project uses a combination of GitHub Actions for verification and manual deployment:
 
-- Pushing to the `main` branch automatically deploys to the Internet Computer mainnet
-- Pull requests are automatically built and tested
-- Manual deployments can be triggered from the Actions tab
+- GitHub Actions verify that the build is valid when pushing to `main` or creating pull requests
+- Actual deployment to the Internet Computer is done manually from a developer's machine
 
-### Manual Deployment
+### Deployment Process
 
-To trigger a manual deployment:
+To deploy the project:
 
-1. Go to the Actions tab in the GitHub repository
-2. Select the "Deploy to IC" workflow
-3. Click "Run workflow"
-4. Select the target environment (testnet or mainnet)
-5. Click "Run workflow"
+1. Make sure your changes are committed and pushed to the repository
+2. Verify that the GitHub Actions workflow passes successfully
+3. Deploy from your local machine using the Makefile commands or DFX CLI
 
 ### Using the Makefile
 

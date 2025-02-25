@@ -77,21 +77,18 @@ make deploy-mainnet
 
 ## CI/CD Pipeline
 
-This project uses GitHub Actions for CI/CD:
+This project uses GitHub Actions for build verification:
 
-- Pushing to the `main` branch automatically deploys to the Internet Computer mainnet
-- Pull requests are automatically built and tested
-- Manual deployments can be triggered from the Actions tab
+- GitHub Actions verify that the build is valid when pushing to `main` or creating pull requests
+- The CI workflow checks that the pre-built files exist and that dependencies can be installed
 
-### Manual Deployment
+### Deployment Process
 
-To trigger a manual deployment:
+Deployment to the Internet Computer is done manually from a developer's machine:
 
-1. Go to the Actions tab in the GitHub repository
-2. Select the "Deploy to IC" workflow
-3. Click "Run workflow"
-4. Select the target environment (testnet or mainnet)
-5. Click "Run workflow"
+1. Make sure your changes are committed and pushed to the repository
+2. Verify that the GitHub Actions workflow passes successfully
+3. Deploy from your local machine using the Makefile commands or DFX CLI
 
 ## Code Style
 
