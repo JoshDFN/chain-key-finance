@@ -56,8 +56,8 @@ For a detailed overview of the current status and what needs to be done, see the
 
 1. Clone the repository:
    ```
-   git clone https://github.com/JoshDFN/teleport.git
-   cd teleport
+   git clone https://github.com/JoshDFN/chain-key-finance.git
+   cd chain-key-finance
    ```
 
 2. Install dependencies:
@@ -101,8 +101,12 @@ This project uses a combination of GitHub Actions for verification and manual de
 To deploy the project:
 
 1. Make sure your changes are committed and pushed to the repository
+   - You can use the included `update-github.sh` script to easily commit and push changes
+   - Run `./update-github.sh -m "Your commit message"` to commit and push
 2. Verify that the GitHub Actions workflow passes successfully
 3. Deploy from your local machine using the Makefile commands or DFX CLI
+
+For more information about the GitHub update script, see `update-github-readme.md`.
 
 ### Using the Makefile
 

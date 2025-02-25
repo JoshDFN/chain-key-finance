@@ -4,10 +4,15 @@
 
 1. Create a feature branch from `main`
 2. Make your changes
-3. Create a pull request to `main`
-4. Wait for CI checks to pass
-5. Request a review
-6. Once approved, merge your PR
+3. Commit and push your changes
+   - You can use the included `update-github.sh` script to easily commit and push changes
+   - Run `./update-github.sh -m "Your commit message"` to commit and push
+4. Create a pull request to `main`
+5. Wait for CI checks to pass
+6. Request a review
+7. Once approved, merge your PR
+
+For more information about the GitHub update script, see `update-github-readme.md`.
 
 ## Branch Naming Convention
 
@@ -36,8 +41,8 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. Clone the repository:
    ```
-   git clone https://github.com/JoshDFN/teleport.git
-   cd teleport
+   git clone https://github.com/JoshDFN/chain-key-finance.git
+   cd chain-key-finance
    ```
 
 2. Install dependencies:
