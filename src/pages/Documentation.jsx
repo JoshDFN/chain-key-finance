@@ -51,6 +51,16 @@ function Documentation() {
             </button>
             <button
               className={`px-6 py-3 text-sm font-medium ${
+                activeTab === 'utoiso'
+                  ? 'text-black border-b-2 border-black'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setActiveTab('utoiso')}
+            >
+              UTOISO
+            </button>
+            <button
+              className={`px-6 py-3 text-sm font-medium ${
                 activeTab === 'project-status'
                   ? 'text-black border-b-2 border-black'
                   : 'text-gray-500 hover:text-gray-700'
@@ -308,6 +318,42 @@ function Documentation() {
                     <li>Initiates a transfer of native assets to the user's provided address</li>
                   </ol>
                 </div>
+                
+                <div className="space-y-4 mt-6">
+                  <h3 className="text-xl font-semibold">UTOISO Token Flow</h3>
+                  <p className="text-gray-700 mb-4">
+                    The UTOISO platform introduces an additional token flow mechanism for tokenized share offerings:
+                  </p>
+                  
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <h4 className="font-medium mb-3">Bid and Order Process</h4>
+                    <ol className="list-decimal pl-5 space-y-3">
+                      <li>User deposits assets (BTC, ETH, USDC) to receive chain-key tokens</li>
+                      <li>User submits a bid with maximum price and amount in the UTOISO platform</li>
+                      <li>Bid is recorded in the current sale round's order book</li>
+                      <li>When round closes, the system calculates optimal price using parameter sweep</li>
+                      <li>System allocates shares to successful bidders at the uniform clearing price</li>
+                      <li>Chain-key tokens are used to pay for allocated shares</li>
+                      <li>Users receive share tokens subject to the round's vesting schedule</li>
+                    </ol>
+                  </div>
+                  
+                  <div className="bg-gray-100 p-4 rounded-lg mt-4">
+                    <h4 className="font-medium mb-3">Vesting and Release Process</h4>
+                    <ol className="list-decimal pl-5 space-y-3">
+                      <li>Acquired shares are recorded with their respective vesting schedules</li>
+                      <li>Initial vesting period is determined by the sale round (44 to 0 months)</li>
+                      <li>Market price oracle regularly checks token price for vesting acceleration</li>
+                      <li>If market price exceeds acceleration threshold, vesting schedule accelerates</li>
+                      <li>As shares vest, they are released to user's wallet for full ownership</li>
+                      <li>Users can track vesting progress and upcoming releases in their portfolio</li>
+                    </ol>
+                  </div>
+                  
+                  <div className="flex items-center justify-center mt-6">
+                    <img src="/images/utoiso-token-flow.png" alt="UTOISO Token Flow Diagram" className="max-w-full h-auto rounded-lg shadow-sm" />
+                  </div>
+                </div>
               </div>
             )}
             
@@ -373,6 +419,58 @@ function Documentation() {
                     <li><span className="font-medium">Error handling:</span> Proper error handling prevents unexpected behavior</li>
                     <li><span className="font-medium">Audit trail:</span> All transactions are recorded on the Internet Computer</li>
                   </ul>
+                </div>
+                
+                <div className="space-y-4 mt-6">
+                  <h3 className="text-xl font-semibold">UTOISO Security Measures</h3>
+                  <p className="text-gray-700 mb-4">
+                    The UTOISO platform implements several security measures to ensure the integrity of the tokenized share offering process:
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <h4 className="font-medium mb-3">Order Processing Security</h4>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li><span className="font-medium">Order Validation:</span> Rigorous validation of all bid parameters</li>
+                        <li><span className="font-medium">Fair Price Discovery:</span> Parameter sweep algorithm prevents price manipulation</li>
+                        <li><span className="font-medium">Uniform Clearing Price:</span> All successful bidders pay the same price</li>
+                        <li><span className="font-medium">Transaction Integrity:</span> Atomic operations prevent partial state updates</li>
+                        <li><span className="font-medium">Authorization Controls:</span> Only authorized principals can configure rounds</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <h4 className="font-medium mb-3">Vesting Security</h4>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li><span className="font-medium">Tamper-proof Schedules:</span> Vesting schedules cannot be altered without authorization</li>
+                        <li><span className="font-medium">Secure Price Oracle:</span> Market price data for acceleration is securely obtained</li>
+                        <li><span className="font-medium">Acceleration Caps:</span> Maximum acceleration factor prevents excessive release</li>
+                        <li><span className="font-medium">Admin Override Controls:</span> Manual overrides require multi-factor authorization</li>
+                        <li><span className="font-medium">Audit Logging:</span> All vesting actions are logged with timestamps</li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mt-4">
+                    <div className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-700 mr-2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                      </svg>
+                      <h4 className="font-medium text-yellow-800">Security Enhancement Plan</h4>
+                    </div>
+                    <p className="text-yellow-700 mt-2">
+                      While core security features are implemented, several enhancements are scheduled for implementation:
+                    </p>
+                    <ul className="list-disc pl-5 space-y-2 text-yellow-700 mt-2">
+                      <li><span className="font-medium">Rate Limiting:</span> To prevent abuse of critical functions</li>
+                      <li><span className="font-medium">Monitoring System:</span> For real-time detection of suspicious activity</li>
+                      <li><span className="font-medium">Emergency Response:</span> Procedures to address potential security incidents</li>
+                      <li><span className="font-medium">Comprehensive Audit Trail:</span> For all critical operations</li>
+                      <li><span className="font-medium">Security Audit:</span> A thorough security audit by an independent firm</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}
@@ -495,6 +593,10 @@ function Documentation() {
                         <li>DEX order book functionality</li>
                         <li>Portfolio tracking</li>
                         <li>Transaction history</li>
+                        <li>UTOISO core data structures</li>
+                        <li>UTOISO order processing</li>
+                        <li>UTOISO pricing engine</li>
+                        <li>UTOISO frontend components</li>
                       </ul>
                     </div>
                     
@@ -505,6 +607,9 @@ function Documentation() {
                         <li>Transaction verification (basic confirmation tracking)</li>
                         <li>Token minting (simplified conversion rates)</li>
                         <li>Error handling (some fallback mechanisms)</li>
+                        <li>UTOISO security measures</li>
+                        <li>UTOISO documentation and training</li>
+                        <li>UTOISO audit and compliance reporting</li>
                       </ul>
                     </div>
                   </div>
@@ -517,6 +622,10 @@ function Documentation() {
                       <li><span className="font-medium">Security Enhancements:</span> Implement secure key management and multi-signature support</li>
                       <li><span className="font-medium">Testing:</span> Develop comprehensive test suite and conduct security audit</li>
                       <li><span className="font-medium">Documentation:</span> Complete user guides and API documentation</li>
+                      <li><span className="font-medium">UTOISO Financial Intermediary Support:</span> Develop API for regulated intermediaries</li>
+                      <li><span className="font-medium">UTOISO Security:</span> Implement comprehensive security measures for UTOISO functionality</li>
+                      <li><span className="font-medium">UTOISO Testing:</span> Create test suite for UTOISO functionality</li>
+                      <li><span className="font-medium">UTOISO Deployment:</span> Prepare mainnet deployment strategy</li>
                     </ul>
                   </div>
                 </div>
@@ -621,6 +730,189 @@ function Documentation() {
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'utoiso' && (
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold">UTO Initial Stock Offering (UTOISO)</h2>
+                
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">What is UTOISO?</h3>
+                  <p className="text-gray-700">
+                    UTOISO (UTO Initial Stock Offering) is a mechanism for issuing tokenized shares using a dynamic pricing model that balances fairness and market demand. Unlike traditional IPOs or fixed-price token sales, UTOISO uses a parameter sweep algorithm to determine the optimal price that maximizes both participation and capital raised.
+                  </p>
+                  
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Key Features:</h4>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li><span className="font-medium">Dynamic Pricing:</span> Optimal price determined by supply and demand</li>
+                      <li><span className="font-medium">Price Discovery:</span> Uses a parameter sweep algorithm to maximize participation</li>
+                      <li><span className="font-medium">Fair Allocation:</span> All successful bidders in a round pay the same price</li>
+                      <li><span className="font-medium">Vesting Schedule:</span> Built-in vesting with market-based acceleration</li>
+                      <li><span className="font-medium">Multi-Round Structure:</span> 12 sequential sale rounds over 24 months</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">How It Works</h3>
+                  <ol className="list-decimal pl-5 space-y-3">
+                    <li>
+                      <p className="font-medium">Round Configuration</p>
+                      <p className="text-gray-700">Each round is configured with parameters including min/max price, share sell target, and dates.</p>
+                    </li>
+                    <li>
+                      <p className="font-medium">Bid Submission</p>
+                      <p className="text-gray-700">During an active round, participants submit bids specifying their maximum willing price and investment amount.</p>
+                    </li>
+                    <li>
+                      <p className="font-medium">Price Determination</p>
+                      <p className="text-gray-700">After the round closes, the system runs a parameter sweep algorithm to find the optimal price that maximizes participation and capital raised.</p>
+                    </li>
+                    <li>
+                      <p className="font-medium">Share Allocation</p>
+                      <p className="text-gray-700">Shares are allocated to successful bidders (those who bid at or above the determined price). All successful bidders pay the same price.</p>
+                    </li>
+                    <li>
+                      <p className="font-medium">Vesting</p>
+                      <p className="text-gray-700">Allocated shares are subject to a vesting schedule, with the potential for market-based acceleration.</p>
+                    </li>
+                  </ol>
+                </div>
+                
+                <div className="bg-gray-100 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold mb-3">UTOISO vs. Traditional Mechanisms</h3>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-white">
+                        <tr>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feature</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UTOISO</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Traditional IPO</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fixed-Price Token Sale</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Price Discovery</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dynamic algorithm</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Underwriter-determined</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Fixed by issuer</td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Fairness</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">All pay same price</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tiered access</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">First come, first served</td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Vesting</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Built-in with acceleration</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lockup periods</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Often none</td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Accessibility</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Open to all</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Limited to institutions</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Open but often front-run</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">Vesting Mechanism</h3>
+                  <p className="text-gray-700">
+                    UTOISO includes a sophisticated vesting mechanism that balances long-term alignment with market performance:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li><span className="font-medium">Base Vesting Schedule:</span> Each round has a different base vesting period, ranging from 44 months (Round 1) to 0 months (Round 12)</li>
+                    <li><span className="font-medium">Acceleration Mechanism:</span> Vesting can accelerate based on market performance</li>
+                    <li><span className="font-medium">Acceleration Cap:</span> Maximum acceleration factor of 2 (halving the waiting interval)</li>
+                    <li><span className="font-medium">Market Price Oracle:</span> Uses secure oracles to determine market price for acceleration</li>
+                  </ul>
+                </div>
+                
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
+                  <h3 className="text-lg font-semibold text-blue-800 mb-2">Rounds Structure</h3>
+                  <p className="text-blue-800 mb-3">
+                    UTOISO supports 12 sequential sale rounds over 24 months, each with its own configuration:
+                  </p>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white border border-blue-200">
+                      <thead>
+                        <tr className="bg-blue-50">
+                          <th className="px-4 py-2 border-b border-blue-200 text-blue-800">Round</th>
+                          <th className="px-4 py-2 border-b border-blue-200 text-blue-800">Base Vesting (Months)</th>
+                          <th className="px-4 py-2 border-b border-blue-200 text-blue-800">Price Range</th>
+                          <th className="px-4 py-2 border-b border-blue-200 text-blue-800">Target Shares</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">1</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">44</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">$1.00 - $1.50</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">1,000,000</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">2</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">40</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">$1.25 - $1.75</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">1,000,000</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">...</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">...</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">...</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">...</td>
+                        </tr>
+                        <tr>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">12</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">0</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">Market-based</td>
+                          <td className="px-4 py-2 border-b border-blue-200 text-blue-800">1,000,000</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div className="mt-8">
+                  <h3 className="text-xl font-semibold mb-4">UTOISO User Guides</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="/docs/utoiso-user-guide.md" className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+                      <h4 className="text-lg font-semibold mb-2">User Guide</h4>
+                      <p className="text-gray-600 mb-4">
+                        Step-by-step instructions for participating in UTOISO rounds, including bid submission, portfolio tracking, and vesting management.
+                      </p>
+                      <div className="flex items-center text-blue-600">
+                        <span>View Guide</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
+                    </a>
+                    
+                    <a href="/docs/utoiso-admin-guide.md" className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+                      <h4 className="text-lg font-semibold mb-2">Admin Guide</h4>
+                      <p className="text-gray-600 mb-4">
+                        Detailed documentation for administrators, including round configuration, processing, and system management.
+                      </p>
+                      <div className="flex items-center text-blue-600">
+                        <span>View Guide</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>

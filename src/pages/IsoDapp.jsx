@@ -92,14 +92,7 @@ function IsoDapp() {
   const handleAssetSelect = async (asset) => {
     try {
       // Generate a deposit address for the selected asset
-      let address;
-      try {
-        address = await generateDepositAddress(asset.id);
-      } catch (err) {
-        console.error("Error generating deposit address:", err);
-        // Fallback to a simulated address
-        address = `${asset.id}-address-${Math.random().toString(36).substring(2)}-${Date.now()}`;
-      }
+      const address = await generateDepositAddress(asset.id);
       
       console.log("Asset selected:", asset.id, "Address:", address, "Step:", 2);
       

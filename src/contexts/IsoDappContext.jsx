@@ -138,8 +138,20 @@ export function IsoDappProvider({ children }) {
         const actor = createIsoDappActor(CANISTER_IDS.iso_dapp, {
           agent,
         });
+        
+        // Add debugging to check what methods are available on the actor
+        console.log("ISO Dapp actor methods:", Object.keys(actor));
+        
         setIsoDappActor(actor);
         console.log("ISO Dapp actor created successfully with canister ID:", CANISTER_IDS.iso_dapp);
+        
+        // Clear the localStorage cache of deposit addresses
+        try {
+          localStorage.removeItem('depositAddresses');
+          console.log("Cleared localStorage cache of deposit addresses");
+        } catch (e) {
+          console.error('Failed to clear localStorage cache:', e);
+        }
         
         // Get ISO details
         getIsoDetails();
@@ -167,24 +179,7 @@ export function IsoDappProvider({ children }) {
       }
       
       // Call the canister to generate a deposit address
-      let address;
-      try {
-        address = await isoDappActor.generateDepositAddress(assetId);
-      } catch (err) {
-        console.error('Error from canister when generating address:', err);
-        
-        // Generate a fallback address for demo purposes
-        // In a real implementation, we would retry or show an error
-        if (assetId === 'BTC') {
-          // Generate a realistic-looking Bitcoin testnet address
-          address = 'tb1q' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        } else if (assetId === 'ETH' || assetId === 'USDC-ETH') {
-          // Generate a realistic-looking Ethereum address
-          address = '0x' + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('');
-        } else {
-          throw new Error(`Unsupported asset type: ${assetId}`);
-        }
-      }
+      const address = await isoDappActor.generateDepositAddress(assetId);
       
       // Store the address in state
       setDepositAddress(address);
@@ -436,6 +431,7 @@ export function IsoDappProvider({ children }) {
     transactionHistory,
     loading,
     error,
+    isoDappActor, // Add isoDappActor to the context value
     generateDepositAddress,
     monitorDeposits,
     checkDepositStatus,

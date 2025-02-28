@@ -6,6 +6,7 @@ import { IsoDappProvider } from './contexts/IsoDappContext';
 import IsoDapp from './pages/IsoDapp';
 import Dex from './pages/Dex';
 import Documentation from './pages/Documentation';
+import Utoiso from './pages/Utoiso';
 import ConnectButton from './components/ConnectButton';
 import PasswordProtection from './components/PasswordProtection';
 
@@ -43,6 +44,18 @@ function App() {
                           <rect x="3" y="14" width="7" height="7"></rect>
                         </svg>
                         ISO Dapp
+                      </NavLink>
+                      <NavLink
+                        to="/utoiso"
+                        className={({ isActive }) =>
+                          `flex items-center gap-1 text-sm font-medium ${isActive ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`
+                        }
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="8" r="7"></circle>
+                          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                        UTOISO
                       </NavLink>
                       <NavLink
                         to="/dex"
@@ -87,6 +100,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<IsoDapp />} />
                 <Route path="/dex" element={<Dex />} />
+                <Route path="/utoiso" element={<Utoiso />} />
                 <Route path="/docs" element={<Documentation />} />
               </Routes>
             </div>

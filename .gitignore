@@ -5,7 +5,7 @@ node_modules/
 .dfx/
 
 # Build output
-dist/
+# dist/ - Commenting out to include built files in the repository for CI/CD
 
 # Environment variables
 .env
