@@ -97,8 +97,8 @@ module {
             network = config.bitcoin_network;
             address_index = addressIndex;
             key_name = switch (config.bitcoin_network) {
-                case (#mainnet) { "dfx_test_key" };
-                case (#testnet) { "dfx_test_key" };
+                case (#mainnet) { "ic-btc-mainnet" }; // Production key for real Bitcoin mainnet
+                case (#testnet) { "ic-btc-testnet" }; // Production key for Bitcoin testnet
             }
         });
         
