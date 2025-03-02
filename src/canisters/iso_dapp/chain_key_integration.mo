@@ -92,12 +92,13 @@ module {
         let addressIndex : Nat32 = Text.hash(Principal.toText(user)) % 10000;
         
         // Get an address from the Bitcoin integration
+        // Use a standard key name that the management canister recognizes
         let address = await management_canister.bitcoin_get_address({
             network = config.bitcoin_network;
             address_index = addressIndex;
             key_name = switch (config.bitcoin_network) {
-                case (#mainnet) { "key_1" };
-                case (#testnet) { "test_key_1" };
+                case (#mainnet) { "dfx_test_key" };
+                case (#testnet) { "dfx_test_key" };
             }
         });
         
@@ -163,7 +164,7 @@ module {
         let addressIndex : Nat32 = Text.hash(Principal.toText(user)) % 10000;
         
         // Get an Ethereum address using the ethereum_get_address method
-        let network : EthereumNetwork = #mainnet; // Use #sepolia for testnet
+        let network : EthereumNetwork = config.ethereum_network;
         
         let address = await management_canister.ethereum_get_address({
             network = network;

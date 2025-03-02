@@ -450,7 +450,10 @@ actor {
         
         // Generate a new address using Chain Key integration
         if (asset == "BTC") {
-            // Use native Bitcoin address generation through Chain Key
+            // Add required cycles for the bitcoin canister operation
+            Cycles.add(11_000_000_000); // Add slightly more than required
+            
+            // Use Bitcoin address generation through Chain Key
             address := await ChainKeyIntegration.generateBitcoinAddress(
                 user, 
                 chainKeyConfig
@@ -565,6 +568,9 @@ actor {
                 // Different handling depending on asset type
                 if (asset == "BTC") {
                     // For Bitcoin, use Chain Key Bitcoin integration
+                    
+                    // Add cycles for the bitcoin canister operation
+                    Cycles.add(11_000_000_000); // Add slightly more than required
                     
                     // Find the user's known UTXOs
                     var lastUtxos : [ChainKeyIntegration.BitcoinUtxo] = [];

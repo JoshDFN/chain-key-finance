@@ -32,11 +32,28 @@ dfx canister --network ic id ckSOL
 dfx canister --network ic id ckUSDC
 dfx canister --network ic id frontend
 
-# Step 6: Top up the canister that's out of cycles (if needed)
-echo "Checking if canister needs cycles..."
-CANISTER_TO_TOP_UP="ij6aj-iaaaa-aaaad-aakiq-cai"
-echo "Topping up canister $CANISTER_TO_TOP_UP with cycles..."
-dfx canister --network ic deposit-cycles 2000000000 $CANISTER_TO_TOP_UP || echo "Failed to top up cycles - may need manual intervention"
+# Step 6: Top up the canisters that need cycles
+echo "Topping up canisters with cycles..."
+# Top up ckSOL canister
+CKSOL_CANISTER="ij6aj-iaaaa-aaaad-aakiq-cai"
+echo "Topping up ckSOL canister $CKSOL_CANISTER with cycles..."
+dfx canister --network ic deposit-cycles 2000000000 $CKSOL_CANISTER || echo "Failed to top up ckSOL canister - may need manual intervention"
+
+# Top up Bitcoin service canister
+BTC_SERVICE_CANISTER="ghsi2-tqaaa-aaaan-aaaca-cai"
+echo "Topping up Bitcoin service canister $BTC_SERVICE_CANISTER with cycles..."
+# Bitcoin canister requires 10B cycles per operation
+dfx canister --network ic deposit-cycles 20000000000 $BTC_SERVICE_CANISTER || echo "Failed to top up Bitcoin service canister - may need manual intervention"
+
+# Top up DEX canister
+DEX_CANISTER=$(dfx canister --network ic id dex)
+echo "Topping up DEX canister $DEX_CANISTER with cycles..."
+dfx canister --network ic deposit-cycles 10000000000 $DEX_CANISTER || echo "Failed to top up DEX canister - may need manual intervention"
+
+# Top up ISO Dapp canister
+ISO_DAPP_CANISTER=$(dfx canister --network ic id iso_dapp)
+echo "Topping up ISO Dapp canister $ISO_DAPP_CANISTER with cycles..."
+dfx canister --network ic deposit-cycles 10000000000 $ISO_DAPP_CANISTER || echo "Failed to top up ISO Dapp canister - may need manual intervention"
 
 # Step 7: Output frontend URL
 FRONTEND_ID=$(dfx canister --network ic id frontend)
