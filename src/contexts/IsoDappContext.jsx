@@ -145,12 +145,28 @@ export function IsoDappProvider({ children }) {
         setIsoDappActor(actor);
         console.log("ISO Dapp actor created successfully with canister ID:", CANISTER_IDS.iso_dapp);
         
-        // Clear the localStorage cache of deposit addresses
+        // Force clear all browser storage to start fresh
         try {
-          localStorage.removeItem('depositAddresses');
-          console.log("Cleared localStorage cache of deposit addresses");
+          // Clear all localStorage items
+          localStorage.clear();
+          
+          // Also try sessionStorage
+          if (sessionStorage) {
+            sessionStorage.clear();
+          }
+          
+          // Force reload the page to ensure all cached data is cleared
+          if (typeof window !== 'undefined') {
+            // Don't reload in development to avoid infinite loops
+            if (window.location.hostname !== 'localhost') {
+              alert("Clearing cached data. Page will reload to ensure clean state.");
+              window.location.reload(true);
+            }
+          }
+          
+          console.log("Cleared ALL browser storage and forced page reload");
         } catch (e) {
-          console.error('Failed to clear localStorage cache:', e);
+          console.error('Failed to clear browser storage:', e);
         }
         
         // Get ISO details
@@ -178,8 +194,23 @@ export function IsoDappProvider({ children }) {
         setSelectedAsset(asset);
       }
       
+      console.log(`Calling generateDepositAddress on canister for asset ${assetId}...`);
+      
+      // Always clear any cached address for this asset first
+      try {
+        const addresses = JSON.parse(localStorage.getItem('depositAddresses') || '{}');
+        if (addresses[assetId]) {
+          console.log(`Found cached address for ${assetId}, clearing it: ${addresses[assetId]}`);
+          delete addresses[assetId];
+          localStorage.setItem('depositAddresses', JSON.stringify(addresses));
+        }
+      } catch (e) {
+        console.error('Failed to clear cached address:', e);
+      }
+      
       // Call the canister to generate a deposit address
       const address = await isoDappActor.generateDepositAddress(assetId);
+      console.log(`Generated new ${assetId} address from canister: ${address}`);
       
       // Store the address in state
       setDepositAddress(address);
@@ -190,6 +221,7 @@ export function IsoDappProvider({ children }) {
         const addresses = JSON.parse(localStorage.getItem('depositAddresses') || '{}');
         addresses[assetId] = address;
         localStorage.setItem('depositAddresses', JSON.stringify(addresses));
+        console.log(`Stored new ${assetId} address in localStorage: ${address}`);
       } catch (e) {
         console.error('Failed to store address in local storage:', e);
       }
